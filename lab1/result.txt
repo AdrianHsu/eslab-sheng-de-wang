@@ -170,6 +170,7 @@ exit_group(0)                           = ?
 +++ exited with 0 +++
 
 ---
+[LAB3]
 
 user@ta-MS-AA52:~/Desktop/lab1/lab1-2$ ls
 makefile  time_client  time_client.c  time_client.o  time_serv  time_serv.c  time_serv.o
