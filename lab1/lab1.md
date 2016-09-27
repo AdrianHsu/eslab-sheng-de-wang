@@ -261,3 +261,61 @@ ref: [https://kb.iu.edu/d/afnv](https://kb.iu.edu/d/afnv)
 
 ## 觀察討論
 
+***socket***：某個system的`"IP address"` + `"port"`、是這個system跟其他system溝通的end point。  
+***4-tuple***：兩個sys分別跑不同的兩筆processes，他們倆之間的connection可以被一個4-tuple唯一決定。
+
+
+***socket一共有3個參數***
+
+	   serv_addr.sin_family = AF_INET;
+	   serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	   serv_addr.sin_port = htons(5000); 
+
+* arg(1): socket descriptor, 一個整數，代表socket已被建立(`AF_INET`)
+* arg(2): SOCK_STREAM, 代表用哪一個transport layer protocol
+* arg(3): 當0 by default，代表TCP for default protocol
+
+***server依序做的function calls***
+   
+	bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)); 
+	listen(listenfd, 10); 
+   
+* bind(): 就把server的資訊丟進他自己的socket  
+* listen(): e.g. 吃arg = 10代表最多接待10個client
+
+-
+
+	while(1)
+	{
+	  connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
+	  ticks = time(NULL);
+	  snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks));
+	  write(connfd, sendBuff, strlen(sendBuff)); 
+	  close(connfd);
+	  sleep(1);
+	}
+	
+
+  
+* accept(): server一般時候sleep, 在client request時會回傳socket   descriptor並達成3 way TCP handshake  
+* write(): 當server收到client的request時，server透過socket_descriptor，在client 的socket上寫入data。
+* close(): 停止傳data
+
+***client依序做的function calls***
+
+	if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){blabla}
+
+* socket(): 建構子的概念
+
+-
+   
+	if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {blabla}
+
+* connect(): 兩端socket連接（此時，還沒將我們的client socket 給bind到特定的port上）
+
+-
+	
+	while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0){blabla}
+
+* 兩人的sockets連上時，server會送出data，在client socket上跑
+* 遇到socket descriptor 時，client可以用normal read call，在自己的socket descriptor上read出所求的data
