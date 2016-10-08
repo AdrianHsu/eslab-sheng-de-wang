@@ -10,7 +10,7 @@ int main(void)
 	if (wiringPiSetup() == -1)
 		exit(1);
 	pinMode(1, PWM_OUTPUT);
-	while(true)
+	while(1)
 	{
 		for ( bright = 0; bright < 1024; ++bright)
 		{

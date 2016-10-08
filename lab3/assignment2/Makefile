@@ -1,11 +1,11 @@
 #The following macros should be defined. 
-TARGET1=WiringPiLight 
-OBJECT1=WiringPiLight.o
+TARGET1=bcm2835 
+OBJECT1=bcm2835.o
 OBJECT2=
 CC=gcc
 CXX=g++
 LD=g++
-LD_FLAGS += -lwiringPi
+LD_FLAGS += -lbcm2835 
 #LD_FLAGS += -lncurses -pthread
 #C_FLAGS= -g -O0
 C_FLAGS=
