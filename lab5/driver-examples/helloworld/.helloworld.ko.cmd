@@ -1,0 +1,1 @@
+cmd_/home/user/Downloads/driver-examples/helloworld/helloworld.ko := arm-linux-gnueabihf-ld -EL -r  -T ./scripts/module-common.lds --build-id  -o /home/user/Downloads/driver-examples/helloworld/helloworld.ko /home/user/Downloads/driver-examples/helloworld/helloworld.o /home/user/Downloads/driver-examples/helloworld/helloworld.mod.o
