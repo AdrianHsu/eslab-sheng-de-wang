@@ -1,0 +1,117 @@
+Available commands:                                                             
+  list                       List available controllers                         
+  show [ctrl]                Controller information                             
+  select <ctrl>              Select default controller                          
+  devices                    List available devices                             
+  paired-devices             List paired devices                                
+  power <on/off>             Set controller power                               
+  pairable <on/off>          Set controller pairable mode                       
+  discoverable <on/off>      Set controller discoverable mode                   
+  agent <on/off/capability>  Enable/disable agent with given capability         
+  default-agent              Set agent as the default one                       
+  scan <on/off>              Scan for devices                                   
+  info <dev>                 Device information                                 
+  pair <dev>                 Pair with device                                   
+  trust <dev>                Trust device                                       
+  untrust <dev>              Untrust device                                     
+  block <dev>                Block device                                       
+  unblock <dev>              Unblock device                                     
+  remove <dev>               Remove device                                      
+  connect <dev>              Connect device                                     
+  disconnect <dev>           Disconnect device                                  
+  version                    Display version                                    
+  quit                       Quit program                      
+
+
+
+====================================================================
+
+hci0:   Type: BR/EDR  Bus: UART                                                 
+        BD Address: B8:27:EB:5B:3F:69  ACL MTU: 1021:8  SCO MTU: 64:1           
+        UP RUNNING                                                              
+        RX bytes:717 acl:0 sco:0 events:42 errors:0                             
+        TX bytes:1532 acl:0 sco:0 commands:42 errors:0                          
+        Features: 0xbf 0xfe 0xcf 0xfe 0xdb 0xff 0x7b 0x87                       
+        Packet type: DM1 DM3 DM5 DH1 DH3 DH5 HV1 HV2 HV3                        
+        Link policy: RSWITCH SNIFF                                              
+        Link mode: SLAVE ACCEPT                                                 
+        Name: 'raspberrypi'                                                     
+        Class: 0x000000                                                         
+        Service Classes: Unspecified                                            
+        Device Class: Miscellaneous,                                            
+        HCI Version: 4.1 (0x7)  Revision: 0xb6                                  
+        LMP Version: 4.1 (0x7)  Subversion: 0x2209                              
+        Manufacturer: Broadcom Corporation (15)
+
+==============================================================
+
+[bluetooth]# scan on  
+Discovery started                                                               
+[CHG] Controller B8:27:EB:5B:3F:69 Discovering: yes                             
+[NEW] Device 78:7E:61:36:7D:08 Bryan Wang
+[bluetooth]# trust 78:7E:61:36:7D:08                                            
+[CHG] Device 78:7E:61:36:7D:08 Trusted: yes  
+Changing 78:7E:61:36:7D:08 trust succeeded
+[bluetooth]# pair 78:7E:61:36:7D:08   
+Attempting to pair with 78:7E:61:36:7D:08     
+[CHG] Device 78:7E:61:36:7D:08 Connected: yes                           
+Request confirmation                                                            
+[agent] Confirm passkey 023223 (yes/no): yes                                    
+[CHG] Device 78:7E:61:36:7D:08 Modalias: bluetooth:v004Cp6E00d0A00              
+[CHG] Device 78:7E:61:36:7D:08 UUIDs:                                           
+        00000000-deca-fade-deca-deafdecacafe                                    
+        00001000-0000-1000-8000-00805f9b34fb                                    
+        0000110a-0000-1000-8000-00805f9b34fb                                    
+        0000110c-0000-1000-8000-00805f9b34fb                                    
+        0000110e-0000-1000-8000-00805f9b34fb                                    
+        00001116-0000-1000-8000-00805f9b34fb                                    
+        0000111f-0000-1000-8000-00805f9b34fb                                    
+        0000112f-0000-1000-8000-00805f9b34fb                                    
+        00001132-0000-1000-8000-00805f9b34fb                                    
+        00001200-0000-1000-8000-00805f9b34fb                                    
+[CHG] Device 78:7E:61:36:7D:08 Paired: yes                                      
+Pairing successful
+[bluetooth]# discoverable on  
+Changing discoverable on succeeded                                              
+[CHG] Controller B8:27:EB:5B:3F:69 Discoverable: yes
+===============================================================
+
+pi@raspberrypi:~$ sudo ./spp-server                                                                                                 
+set device B8:27:EB:5B:3F:69 to class: 0x001f00
+accepting connections on channel: 10
+received connection from: 30:5A:3A:BB:A3:DC
+rfcomm received: hello i am Adrian
+rfcomm received: hello world!!!
+
+=======================================================
+
+pi@raspberrypi:~$ sudo sdptool add --channel=3 SP
+Serial Port service registered
+pi@raspberrypi:~$ sudo python bluetoothcomm.py 
+Waiting for connection on RFCOMM channel 3
+('30:5A:3A:BB:A3:DC', 3) : connection accepted
+('30:5A:3A:BB:A3:DC', 3) : received [hello i am bryan]
+('30:5A:3A:BB:A3:DC', 3) : sent [hello i am bryan]
+('30:5A:3A:BB:A3:DC', 3) : received [hello world!!]
+('30:5A:3A:BB:A3:DC', 3) : sent [hello world!!]
+
+======================================================
+
+Service Name: Serial Port
+Service Description: COM Port
+Service Provider: BlueZ
+Service RecHandle: 0x10005
+Service Class ID List:
+  "Serial Port" (0x1101)
+Protocol Descriptor List:
+  "L2CAP" (0x0100)
+  "RFCOMM" (0x0003)
+    Channel: 3
+Language Base Attr List:
+  code_ISO639: 0x656e
+  encoding:    0x6a
+  base_offset: 0x100
+Profile Descriptor List:
+  "Serial Port" (0x1101)
+    Version: 0x0100
+
