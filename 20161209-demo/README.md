@@ -49,8 +49,6 @@ sudo hciconfig hci0 up
 
 ###Download the nodejs code and run it:
 
-git clone https://github.com/davidarendsen/eddystone-raspberrypi2.git  
-cd eddystone-raspberrypi2  
 sudo node eddystone-beacon.js  
 
 <b>To enable everything on startup (sudo crontab -e):</b>
