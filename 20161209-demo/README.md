@@ -1,5 +1,10 @@
 #20161209-demo
 
+(host) sudo apt-get install nmap
+nmap -sT -v 192.168.1.0/24
+ssh -X pi@192.168.1.182
+scp file file
+
 ## from lab 7
 (target) sudo apt-get update  
 (target) sudo apt-get dost-upgrade  
